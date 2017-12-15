@@ -1,0 +1,147 @@
+#%RAML 1.0
+---
+resourceTypes:
+  collection:
+      get:
+        responses:          
+          400:
+            description: |
+              The request sent to the server contains data which is not as expected e.g. incorrect drink type
+          404:
+            description: |
+              The requested resource was not found
+  collection-item:
+      get:
+        responses:          
+          400:
+            description: |
+              The request sent to the server contains data which is not as expected e.g. incorrect drink type
+          404:
+            description: |
+              The requested resource was not found                        
+      put:
+        responses:          
+          404:
+            description: |
+              The requested resource on which the modification is being attempted was not found              
+      delete:
+        responses:          
+          404:
+            description: | 
+              The requested resource to delete was not found 
+
+title: Kanban API
+baseUri: http://kanban.codeboje.de/{version}
+version: v1
+description: Basic version of the Kanban API
+
+mediaType: application/json
+
+types:
+   Task:
+     properties:
+      id:
+          description: "unique ID of a task"
+          type: "string"
+      content:
+          description: "The actual task content aka description"
+          type: "string"
+      category:
+          description: "category of the task"
+          type: "string"
+      lane:
+          description: "The lane the task belongs to"
+          type: "string"
+
+/tasks:
+  type: collection
+  get:
+    description: Retrieves all **tasks**
+    responses:
+      200:
+        body:
+          application/json:
+            type: Task[]  
+            example: | 
+              [
+               {
+                 "id": "9781111",
+                 "content": "How to ...",
+                 "category": "cat1.",
+                 "lane": "ready"
+               }
+              ]
+  post:
+    description: create a new task
+    body: 
+      application/json:
+        type: Task
+        example: |
+          {
+             "id": "",
+             "content": "How to ...",
+             "category": "cat1.",
+             "lane": "ready"
+          }
+    responses: 
+      201:
+        body: 
+          application/json:
+            type: Task
+            example: |
+              {
+                 "id": "9781111",
+                 "content": "How to ...",
+                 "category": "cat1.",
+                 "lane": "ready"
+              }
+/task/{TaskId}:
+  type: collection-item
+  uriParameters: 
+    TaskId: 
+      description: The unique id of a task
+  get:
+    description: retrieve a single task
+    responses: 
+      200:
+        body: 
+          application/json:
+            type: Task
+            example: |
+              {
+                 "id": "9781111",
+                 "content": "How to ...",
+                 "category": "cat1.",
+                 "lane": "ready"
+              }
+  delete:
+    description: delete a single task
+    responses: 
+      200:
+        body: 
+          application/json:
+            type: boolean
+  put:
+    description: change a single task
+    body: 
+      application/json:
+        type: Task
+        example: |
+          {
+             "id": "",
+             "content": "How to ...",
+             "category": "cat1.",
+             "lane": "ready"
+          }
+    responses: 
+      200:
+        body: 
+          application/json:
+            type: Task
+            example: |
+              {
+                 "id": "9781111",
+                 "content": "How to ...",
+                 "category": "cat1.",
+                 "lane": "ready"
+              }
