@@ -42,7 +42,7 @@ types:
      properties:
       id:
           description: "unique ID of a task"
-          type: "string"
+          type: "integer"
       content:
           description: "The actual task content aka description"
           type: "string"
@@ -51,7 +51,7 @@ types:
           type: "string"
       lane:
           description: "The lane the task belongs to"
-          type: "string"
+          enum: [ todo, doing, done ]
 
 /tasks:
   type: collection
@@ -65,10 +65,10 @@ types:
             example: | 
               [
                {
-                 "id": "9781111",
+                 "id": 9781111,
                  "content": "How to ...",
                  "category": "cat1.",
-                 "lane": "ready"
+                 "lane": "todo"
                }
               ]
   post:
@@ -78,10 +78,10 @@ types:
         type: Task
         example: |
           {
-             "id": "",
+             "id": -1,
              "content": "How to ...",
              "category": "cat1.",
-             "lane": "ready"
+             "lane": "todo"
           }
     responses: 
       201:
@@ -90,15 +90,16 @@ types:
             type: Task
             example: |
               {
-                 "id": "9781111",
+                 "id": 9781111,
                  "content": "How to ...",
                  "category": "cat1.",
-                 "lane": "ready"
+                 "lane": "todo"
               }
 /task/{TaskId}:
   type: collection-item
   uriParameters: 
-    TaskId: 
+    TaskId:
+      type: integer
       description: The unique id of a task
   get:
     description: retrieve a single task
@@ -109,10 +110,10 @@ types:
             type: Task
             example: |
               {
-                 "id": "9781111",
+                 "id": 9781111,
                  "content": "How to ...",
                  "category": "cat1.",
-                 "lane": "ready"
+                 "lane": "todo"
               }
   delete:
     description: delete a single task
@@ -128,10 +129,10 @@ types:
         type: Task
         example: |
           {
-             "id": "",
+             "id": -1,
              "content": "How to ...",
              "category": "cat1.",
-             "lane": "ready"
+             "lane": "todo"
           }
     responses: 
       200:
@@ -140,8 +141,8 @@ types:
             type: Task
             example: |
               {
-                 "id": "9781111",
+                 "id": 9781111,
                  "content": "How to ...",
                  "category": "cat1.",
-                 "lane": "ready"
+                 "lane": "todo"
               }
