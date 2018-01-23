@@ -33,15 +33,19 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
 		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -63,53 +67,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>com.phoenixnap.oss</groupId>
-				<artifactId>springmvc-raml-plugin</artifactId>
-				<version>0.10.12</version>
-				<configuration>
-					<ramlPath>src/main/raml/api.raml</ramlPath>
-					<!-- <schemaLocation>{path.to.schema.directory||schema.absolute.url}</schemaLocation> -->
-					<outputRelativePath>/target/generated-sources</outputRelativePath>
-					<addTimestampFolder>false</addTimestampFolder>
-					<basePackage>de.codeboje.kanbanapi</basePackage>
-					<baseUri>/</baseUri>
-					<generateUnreferencedSchemas>false</generateUnreferencedSchemas>
-					<generationConfig>
-						<includeAdditionalProperties>false</includeAdditionalProperties>
-					</generationConfig>
-					<seperateMethodsByContentType>false</seperateMethodsByContentType>
-					<rule>com.phoenixnap.oss.ramlapisync.generation.rules.Spring4ControllerDecoratorRule</rule>
-					<ruleConfiguration>
-					</ruleConfiguration>
-				</configuration>
-				<executions>
-					<execution>
-						<id>generate-springmvc-endpoints</id>
-						<phase>compile</phase>
-						<goals>
-							<goal>generate-springmvc-endpoints</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>/target/generated-sources</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

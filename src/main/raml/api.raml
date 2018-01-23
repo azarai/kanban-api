@@ -34,15 +34,19 @@ title: Kanban API
 baseUri: http://kanban.codeboje.de/{version}
 version: v1
 description: Basic version of the Kanban API
+  Resources are filtered by logged in user
 
 mediaType: application/json
 
 types:
-   Task:
+  Task:
      properties:
       id:
           description: "unique ID of a task"
           type: "integer"
+      boardId:
+          description: "unique ID of a kanban board the task belongs to"
+          type: "integer"         
       content:
           description: "The actual task content aka description"
           type: "string"
@@ -51,10 +55,64 @@ types:
           type: "string"
       lane:
           description: "The lane the task belongs to"
-          enum: [ todo, doing, done ]
+          enum: [ ready, doing, done ]
+  Board:
+     properties: 
+       id:
+        description: "unique id of a kanban board"
+        type: "integer"
+       name:
+        description: "name of the board"
+        type: "string"
+       user:
+        description: "user id of the owner"
+        type: "string"
 
-/tasks:
+/boards:
   type: collection
+  get:
+    description: retrieve all boards of the logged in user
+    responses:
+      200:
+        body:
+          application/json:
+            type: Board[]  
+            example: | 
+              [
+               {
+                 "id": 9781111,
+                 "name": "Life",
+                 "user": "harry"
+               }
+              ]
+  post:
+    description: create a new board
+    body: 
+      application/json:
+        type: Board
+        example: |
+               {
+                 "id": -1,
+                 "name": "Life",
+                 "user": "harry"
+               }
+    responses: 
+      201:
+        body: 
+          application/json:
+            type: Board
+            example: |
+               {
+                 "id": 9781111,
+                 "name": "Life",
+                 "user": "harry"
+               }
+/tasks/{BoardId}:
+  type: collection
+  uriParameters: 
+    BoardId:
+      type: integer
+      description: The unique id of a board
   get:
     description: Retrieves all **tasks**
     responses:
@@ -66,9 +124,10 @@ types:
               [
                {
                  "id": 9781111,
+                 "boardId": 4711,
                  "content": "How to ...",
                  "category": "cat1.",
-                 "lane": "todo"
+                 "lane": "ready"
                }
               ]
   post:
@@ -79,9 +138,10 @@ types:
         example: |
           {
              "id": -1,
+             "boardId": 4711,
              "content": "How to ...",
              "category": "cat1.",
-             "lane": "todo"
+             "lane": "ready"
           }
     responses: 
       201:
@@ -91,9 +151,10 @@ types:
             example: |
               {
                  "id": 9781111,
+                 "boardId": 4711,
                  "content": "How to ...",
                  "category": "cat1.",
-                 "lane": "todo"
+                 "lane": "ready"
               }
 /task/{TaskId}:
   type: collection-item
@@ -111,9 +172,10 @@ types:
             example: |
               {
                  "id": 9781111,
+                 "boardId": 4711,
                  "content": "How to ...",
                  "category": "cat1.",
-                 "lane": "todo"
+                 "lane": "ready"
               }
   delete:
     description: delete a single task
@@ -130,9 +192,10 @@ types:
         example: |
           {
              "id": -1,
+             "boardId": 4711,
              "content": "How to ...",
              "category": "cat1.",
-             "lane": "todo"
+             "lane": "ready"
           }
     responses: 
       200:
@@ -142,7 +205,8 @@ types:
             example: |
               {
                  "id": 9781111,
+                 "boardId": 4711,
                  "content": "How to ...",
                  "category": "cat1.",
-                 "lane": "todo"
+                 "lane": "ready"
               }
