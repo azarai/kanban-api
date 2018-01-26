@@ -30,10 +30,6 @@ public class KanbanApiApplication {
 //				.addScript("org/springframework/session/jdbc/schema-h2.sql").build();
 //	}
 
-	@Bean
-	public PlatformTransactionManager transactionManager(DataSource dataSource) {
-		return new DataSourceTransactionManager(dataSource); 
-	}
 
 	@Bean
 	public HttpSessionIdResolver httpSessionIdResolver() {
