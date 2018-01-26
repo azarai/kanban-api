@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,15 +22,16 @@ import lombok.NoArgsConstructor;
 public class Board {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
 	@Column(length=100)
     private String name;
 	
-	@Column(length=100)
-	private String user;
+	@Column()
+	private Long user;
 	
 	@OneToMany(mappedBy="board", fetch=FetchType.LAZY)
+	@JsonIgnore
 	private List<Task> tasks = new ArrayList<Task>();
 }

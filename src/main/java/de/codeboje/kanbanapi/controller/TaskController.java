@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,12 +31,12 @@ public class TaskController {
 
 	@PostMapping("/tasks")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public Task createTask(@Valid Task task) {
+	public Task createTask(@Valid @RequestBody Task task) {
 		return service.createTask(task);
 	}
 
 	@PutMapping("/task/{id}")
-	public Task updateTask(@PathVariable("id") Long taskId, @Valid Task task) {
+	public Task updateTask(@PathVariable("id") Long taskId, @Valid @RequestBody Task task) {
 		return service.updateTask(taskId, task);
 	}
 
