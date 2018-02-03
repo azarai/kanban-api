@@ -10,9 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +30,7 @@ public class Task {
 	private String content;
 
 	@Column(length = 10)
+    @Size(min=0, max=10)
 	private String category;
 
 	@Column(length = 10)
@@ -40,12 +41,4 @@ public class Task {
 	@JoinColumn(name = "board_id")
 	@JsonIgnore
 	private Board board;
-	
-	@JsonProperty("board")
-	private transient Long boardId;
-
-	@JsonProperty("board")
-	public Long getBaordId() {
-		return board.getId();
-	}
 }

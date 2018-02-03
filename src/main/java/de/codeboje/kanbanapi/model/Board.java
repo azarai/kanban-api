@@ -1,15 +1,13 @@
 package de.codeboje.kanbanapi.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,12 +24,11 @@ public class Board {
 	private Long id;
 	
 	@Column(length=100)
+    @NotEmpty
+    @Size(min=6, max=100)
     private String name;
 	
 	@Column()
-	private Long user;
-	
-	@OneToMany(mappedBy="board", fetch=FetchType.LAZY)
 	@JsonIgnore
-	private List<Task> tasks = new ArrayList<Task>();
+	private Long user;
 }

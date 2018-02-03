@@ -1,20 +1,22 @@
 package de.codeboje.kanbanapi.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.codeboje.kanbanapi.ApiError;
+import de.codeboje.kanbanapi.MessageCode;
+import de.codeboje.kanbanapi.model.Board;
 import de.codeboje.kanbanapi.model.Task;
 import de.codeboje.kanbanapi.service.TaskService;
 
@@ -25,23 +27,38 @@ public class TaskController {
 	private TaskService service;
 
 	@GetMapping("/tasks/{boardId}")
-	public List<Task> getTasks(@PathVariable("boardId") Long boardId) {
-		return service.getTasks(boardId);
+	@PreAuthorize("hasPermission(#board, 'read')")
+	public ResponseEntity<?> getTasks(@PathVariable("boardId") Board board) {
+		if (board == null) {
+			return new ResponseEntity<ApiError>(new ApiError(MessageCode.BOARD_DOES_NOT_EXIST), HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(service.getTasks(board),HttpStatus.OK);
 	}
 
-	@PostMapping("/tasks")
-	@ResponseStatus(code = HttpStatus.CREATED)
-	public Task createTask(@Valid @RequestBody Task task) {
-		return service.createTask(task);
+	@PostMapping("/tasks/{boardId}")
+	@PreAuthorize("hasPermission(#board, 'write')")
+	public ResponseEntity<?> createTask(@Valid @RequestBody Task task, @PathVariable("boardId") Board board) {
+		
+		if (board == null) {
+			return new ResponseEntity<ApiError>(new ApiError(MessageCode.BOARD_DOES_NOT_EXIST), HttpStatus.BAD_REQUEST);
+		}
+		
+		final Task taskDb =  service.createTask(task, board);
+		return new ResponseEntity<Task>(taskDb, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/task/{id}")
-	public Task updateTask(@PathVariable("id") Long taskId, @Valid @RequestBody Task task) {
-		return service.updateTask(taskId, task);
+	@PreAuthorize("hasPermission(#task, 'write')")
+	public ResponseEntity<?> updateTask(@PathVariable("id") Task task, @Valid @RequestBody Task taskIn) {
+		if (task == null) {
+			return new ResponseEntity<ApiError>(new ApiError(MessageCode.TASK_DOES_NOT_EXIST), HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<Task>(service.updateTask(task, taskIn), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/task/{id}")
-	public void deleteTask(@PathVariable("id") Long taskId) {
-		service.deleteTask(taskId);
+	@PreAuthorize("hasPermission(#task, 'write')")
+	public void deleteTask(@PathVariable("id") Task task) {
+		service.deleteTask(task);
 	}
 }
