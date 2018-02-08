@@ -28,7 +28,7 @@ public class Board {
     @Size(min=6, max=100)
     private String name;
 	
-	@Column()
+	@Column(name="usercol")
 	@JsonIgnore
 	private Long user;
 }

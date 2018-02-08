@@ -1,6 +1,5 @@
 package de.codeboje.kanbanapi;
 
-import java.util.Collection;
 import java.util.Collections;
 
 import org.springframework.boot.SpringApplication;
@@ -15,7 +14,6 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
-import springfox.documentation.service.VendorExtension;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -56,6 +54,5 @@ public class KanbanApiApplication {
           "Free to usL",
           Collections.emptyList());
    }
-    
 
 }
