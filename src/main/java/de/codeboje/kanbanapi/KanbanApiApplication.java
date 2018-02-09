@@ -49,9 +49,9 @@ public class KanbanApiApplication {
           "Kanban API as a backend for testing UIs",
           "v1",
           "Free to use", 
-          new Contact("Jens Boje", "codeboje.de", "info@codeboje.de"), 
+          new Contact("Jens Boje", "kanbanbackend.com", "info@codeboje.de"), 
           "Free to us", 
-          "Free to usL",
+          "Free to use",
           Collections.emptyList());
    }
 

@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import de.codeboje.kanbanapi.auth.AppUserDetailsService;
+import de.codeboje.kanbanapi.auth.KanbanLogoutSuccessHandler;
 import de.codeboje.kanbanapi.auth.RestAuthenticationEntryPoint;
 
 @Configuration
@@ -47,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/register").permitAll()
 		.anyRequest().authenticated()
 		.and().headers().frameOptions().disable()
-		.and().httpBasic();
+		.and().httpBasic().and().logout().logoutSuccessHandler(new KanbanLogoutSuccessHandler());
 	}
 
 	@Bean

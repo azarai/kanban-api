@@ -11,4 +11,6 @@ public interface TaskRepository extends CrudRepository<Task, Long>{
 
 	List<Task> findAllByBoard(Board board);
 
+	void deleteAllByBoard(Board board);
+
 }

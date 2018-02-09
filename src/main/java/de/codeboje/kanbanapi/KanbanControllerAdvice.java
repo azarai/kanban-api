@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
@@ -24,10 +26,10 @@ public class KanbanControllerAdvice  {
 	private Logger LOGGER = LoggerFactory.getLogger(KanbanControllerAdvice.class);
 
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ApiError> defaultException(Exception e) {
+	public ResponseEntity<ApiError> defaultException(HttpServletRequest request, Exception e) {
 		final InternalApiError msg = new InternalApiError();
 		msg.setMsgCode(MessageCode.TECHNICAL_ERROR);
-		LOGGER.error("Server error with uniqueErrorId={}", msg.getUniqueErrorId(), e);
+		LOGGER.error("Server error with uniqueErrorId={}, path={}", msg.getUniqueErrorId(),request.getRequestURI(), e);
 		return new ResponseEntity<ApiError>(msg, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
